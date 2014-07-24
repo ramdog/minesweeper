@@ -1,0 +1,34 @@
+
+<div id="settings">
+  <div id="labels">
+    <p>Rows ({{gridRows}}):</p>
+    <p>Columns ({{gridCols}}):</p>
+    <p>Mines ({{numMines}}):</p>
+  </div>
+  
+  <div id="ranges">
+    <p>1 <input type="range" min="1" max ="25" ng-model="gridRows" ng-disabled="gameStatus==='active'"> 25</p>
+    <p>1 <input type="range" min="1" max ="25" ng-model="gridCols" ng-disabled="gameStatus==='active'"> 25</p>
+    <p>1 <input type="range" min="1" max ="100" ng-model="numMines" ng-disabled="gameStatus==='active'"> 100</p>
+  </div>
+</div>
+
+<div class="container">
+  <button ng-click="revealMines(true)" ng-disabled="gameStatus==='inactive'">Cheat</button>
+  <button ng-click="restartGame(gridRows, gridCols, numMines)">Restart</button>
+  <button ng-click="validateGame(grid)" ng-disabled="gameStatus==='inactive'">Validate</button>
+</div>
+
+<div class="container">
+  <table>
+    <tbody>
+      <tr ng-repeat="(r, row) in grid">
+        <td ng-repeat="(c, cell) in row" ng-click="revealCell(r, c, grid, cell)" ng-class="{zero: cell.isRevealed && !cell.isMine && cell.adjacentMines===0}">
+          <span ng-if="cell.isRevealed && !cell.isMine && cell.adjacentMines!==0">{{cell.adjacentMines}}</span>
+          <span ng-if="cell.isRevealed && cell.isMine">{{cell.boom}}</span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <h2 ng-if="gameStatus==='inactive'">{{gameOutcome}}</h2>
+</div>
